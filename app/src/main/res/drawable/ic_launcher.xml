@@ -1,0 +1,39 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- remote body -->
+    <path
+        android:fillColor="#FF6A00"
+        android:pathData="M54,6 C40,6 30,17 30,31 L30,77 C30,91 40,102 54,102 C68,102 78,91 78,77 L78,31 C78,17 68,6 54,6 Z" />
+
+    <!-- power button -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,24 m-7,0 a7,7 0 1,0 14,0 a7,7 0 1,0 -14,0" />
+    <path
+        android:fillColor="#FF6A00"
+        android:strokeColor="#FF6A00"
+        android:strokeWidth="2.2"
+        android:pathData="M54,20 L54,28 M49.5,23.5 A6.5,6.5 0 1,0 58.5,23.5" />
+
+    <!-- button grid row 1 -->
+    <path android:fillColor="#FFFFFF" android:pathData="M44,40 m-2.6,0 a2.6,2.6 0 1,0 5.2,0 a2.6,2.6 0 1,0 -5.2,0" />
+    <path android:fillColor="#FFFFFF" android:pathData="M54,40 m-2.6,0 a2.6,2.6 0 1,0 5.2,0 a2.6,2.6 0 1,0 -5.2,0" />
+    <path android:fillColor="#FFFFFF" android:pathData="M64,40 m-2.6,0 a2.6,2.6 0 1,0 5.2,0 a2.6,2.6 0 1,0 -5.2,0" />
+
+    <!-- button grid row 2 -->
+    <path android:fillColor="#FFFFFF" android:pathData="M44,52 m-2.6,0 a2.6,2.6 0 1,0 5.2,0 a2.6,2.6 0 1,0 -5.2,0" />
+    <path android:fillColor="#FFFFFF" android:pathData="M54,52 m-2.6,0 a2.6,2.6 0 1,0 5.2,0 a2.6,2.6 0 1,0 -5.2,0" />
+    <path android:fillColor="#FFFFFF" android:pathData="M64,52 m-2.6,0 a2.6,2.6 0 1,0 5.2,0 a2.6,2.6 0 1,0 -5.2,0" />
+
+    <!-- ok / dpad -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,74 m-12,0 a12,12 0 1,0 24,0 a12,12 0 1,0 -24,0" />
+    <path
+        android:fillColor="#FF6A00"
+        android:pathData="M54,74 m-6,0 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0" />
+</vector>

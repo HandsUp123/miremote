@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">小米遥控</string>
+    <string name="action_add_remote">添加遥控器</string>
+    <string name="action_manage_groups">管理分组</string>
+    <string name="action_add_group">新建分组</string>
+    <string name="action_rename">重命名</string>
+    <string name="action_delete">删除</string>
+    <string name="action_move">移动到分组</string>
+    <string name="action_save">保存</string>
+    <string name="action_cancel">取消</string>
+    <string name="action_confirm">确定</string>
+    <string name="action_back">返回</string>
+
+    <string name="hint_remote_name">遥控器名称</string>
+    <string name="hint_group_name">分组名称</string>
+
+    <string name="title_select_type">选择设备类型</string>
+    <string name="title_select_brand">选择品牌</string>
+    <string name="title_test_remote">按键测试</string>
+    <string name="title_save_remote">保存遥控器</string>
+
+    <string name="msg_no_ir">当前设备没有红外发射器，部分功能不可用</string>
+    <string name="msg_empty_group">该分组还没有遥控器，点击右上角添加</string>
+    <string name="msg_test_hint">对准设备按下电源键，若设备有反应请点击「保存遥控器」</string>
+    <string name="msg_delete_group_confirm">删除分组将同时删除组内所有遥控器，确定删除？</string>
+    <string name="msg_delete_remote_confirm">确定删除该遥控器？</string>
+    <string name="msg_select_group">选择分组</string>
+
+    <string name="label_no_group">未分组</string>
+</resources>
