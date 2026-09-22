@@ -241,6 +241,57 @@ object SharpProtocol : IrProtocol {
 }
 
 /**
+ * Aiwa 协议（38kHz 载波，NEC 变体）。
+ *
+ * 帧结构：NEC1 引导 + 4 位前缀(0b0010，低位在前) + 32 位数据
+ *   数据：addr(8) + secondByte(8) + cmd(8) + ~cmd(8)，低位在前
+ *   secondByte：subdevice=255 时取 ~addr（标准 NEC 风格），否则取 subdevice
+ *
+ * 位编码同 NEC：1 = 560us 高 + 1690us 低；0 = 560us 高 + 560us 低
+ * 用于康佳等国产电视。
+ */
+object AiwaProtocol : IrProtocol {
+
+    override val carrierHz = 38_000
+    private const val LEAD_ON = 9000
+    private const val LEAD_OFF = 4500
+    private const val BIT_ON = 560
+    private const val ZERO_OFF = 560
+    private const val ONE_OFF = 1690
+    private const val STOP_ON = 560
+    private const val PREFIX = 0b0010  // 4 位前缀，低位在前 = 0,1,0,0
+
+    override fun encode(device: Int, subdevice: Int, function: Int): IntArray {
+        val addr = device and 0xFF
+        val cmd = function and 0xFF
+        val secondByte = if (subdevice == 255 || subdevice < 0) {
+            addr.inv() and 0xFF
+        } else {
+            subdevice and 0xFF
+        }
+        val bytes = intArrayOf(addr, secondByte, cmd, cmd.inv() and 0xFF)
+
+        val pattern = ArrayList<Int>(76)
+        pattern.add(LEAD_ON)
+        pattern.add(LEAD_OFF)
+        // 4 位前缀
+        for (i in 0 until 4) {
+            pattern.add(BIT_ON)
+            pattern.add(if (((PREFIX shr i) and 1) == 1) ONE_OFF else ZERO_OFF)
+        }
+        // 32 位数据，低位在前
+        for (b in bytes) {
+            for (i in 0 until 8) {
+                pattern.add(BIT_ON)
+                pattern.add(if (((b shr i) and 1) == 1) ONE_OFF else ZERO_OFF)
+            }
+        }
+        pattern.add(STOP_ON)
+        return pattern.toIntArray()
+    }
+}
+
+/**
  * RCA 协议（38kHz 载波）。
  *
  * 引导：4000us 高 + 4000us 低
@@ -299,7 +350,8 @@ object ProtocolRegistry {
         "Panasonic" to PanasonicProtocol,
         "Sharp" to SharpProtocol,
         "RCA-38" to RcaProtocol,
-        "RCA" to RcaProtocol
+        "RCA" to RcaProtocol,
+        "Aiwa" to AiwaProtocol
     )
 
     /** 协议是否已实现（用于 UI 提示用户哪些机型可发射）。 */

@@ -1,6 +1,71 @@
 {
   "brands": [
     {
+      "id": "konka_tv",
+      "name": "康佳",
+      "deviceType": "TV",
+      "models": [
+        {
+          "id": "konka_tv_kk_y199",
+          "name": "Konka TV KK-Y199",
+          "protocol": "Aiwa",
+          "device": 25,
+          "subdevice": 1,
+          "keys": {
+            "power": 1,
+            "ch_up": 2,
+            "ch_down": 3,
+            "vol_up": 4,
+            "vol_down": 5,
+            "mute": 10,
+            "prev_ch": 12,
+            "sleep": 13,
+            "source": 14,
+            "menu": 29,
+            "0": 16,
+            "1": 17,
+            "2": 18,
+            "3": 19,
+            "4": 20,
+            "5": 21,
+            "6": 22,
+            "7": 23,
+            "8": 24,
+            "9": 25
+          }
+        },
+        {
+          "id": "konka_tv_kk_y250a",
+          "name": "Konka TV KK-Y250A",
+          "protocol": "Aiwa",
+          "device": 25,
+          "subdevice": 1,
+          "keys": {
+            "power": 28,
+            "ch_up": 27,
+            "ch_down": 26,
+            "vol_up": 31,
+            "vol_down": 30,
+            "mute": 21,
+            "source": 13,
+            "back": 14,
+            "menu": 16,
+            "timer": 29,
+            "0": 0,
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5,
+            "6": 6,
+            "7": 7,
+            "8": 8,
+            "9": 9
+          }
+        }
+      ]
+    },
+    {
       "id": "samsung_tv",
       "name": "三星",
       "deviceType": "TV",
