@@ -19,10 +19,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.Autorenew
+import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -44,6 +48,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.miir.remote.AppContainer
 import com.miir.remote.ir.DeviceType
 import com.miir.remote.ir.IrCodeDatabase
+import com.miir.remote.ir.RemoteKey
 import com.miir.remote.ui.components.RemoteKeyGrid
 import com.miir.remote.ui.components.deviceTypeIcon
 
@@ -56,12 +61,20 @@ fun AddRemoteScreen(
 ) {
     val vm: AddRemoteViewModel = viewModel(
         factory = viewModelFactory {
-            initializer { AddRemoteViewModel(container.repository, container.irTransmitter) }
+            initializer {
+                AddRemoteViewModel(
+                    container.repository,
+                    container.irTransmitter,
+                    container.irCodeDatabase
+                )
+            }
         }
     )
     val step by vm.step.collectAsState()
     val type by vm.type.collectAsState()
-    val brandId by vm.brandId.collectAsState()
+    val codeSets by vm.codeSets.collectAsState()
+    val currentIndex by vm.currentIndex.collectAsState()
+    val autoMatching by vm.autoMatching.collectAsState()
     val name by vm.remoteName.collectAsState()
     val groupId by vm.groupId.collectAsState()
     val groups by vm.groups.collectAsState()
@@ -69,7 +82,7 @@ fun AddRemoteScreen(
     val title = when (step) {
         AddRemoteViewModel.Step.TYPE -> "选择设备类型"
         AddRemoteViewModel.Step.BRAND -> "选择品牌"
-        AddRemoteViewModel.Step.TEST -> "按键测试"
+        AddRemoteViewModel.Step.TEST -> "试码匹配"
         AddRemoteViewModel.Step.SAVE -> "保存遥控器"
     }
 
@@ -98,6 +111,7 @@ fun AddRemoteScreen(
                 AddRemoteViewModel.Step.BRAND -> type?.let {
                     BrandStep(
                         type = it,
+                        codes = container.irCodeDatabase,
                         onSelect = vm::selectBrand
                     )
                 }
@@ -106,7 +120,13 @@ fun AddRemoteScreen(
                     TestStep(
                         type = it,
                         hasIr = vm.hasIrEmitter,
-                        onKey = vm::transmit,
+                        codeSets = codeSets,
+                        currentIndex = currentIndex,
+                        autoMatching = autoMatching,
+                        onPrev = vm::prevCodeSet,
+                        onNext = vm::nextCodeSet,
+                        onToggleAutoMatch = vm::toggleAutoMatch,
+                        onKey = vm::transmitKey,
                         onSave = vm::goNextToSave
                     )
                 }
@@ -164,7 +184,11 @@ private fun TypeStep(onSelect: (DeviceType) -> Unit) {
 }
 
 @Composable
-private fun BrandStep(type: DeviceType, onSelect: (String) -> Unit) {
+private fun BrandStep(
+    type: DeviceType,
+    codes: IrCodeDatabase,
+    onSelect: (String) -> Unit
+) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = androidx.compose.foundation.layout.PaddingValues(
@@ -175,7 +199,8 @@ private fun BrandStep(type: DeviceType, onSelect: (String) -> Unit) {
         ),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(IrCodeDatabase.brandsFor(type), key = { it.id }) { brand ->
+        items(codes.brandsFor(type), key = { it.id }) { brand ->
+            val modelCount = codes.codeSetsFor(brand.id).size
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = { onSelect(brand.id) }
@@ -192,7 +217,14 @@ private fun BrandStep(type: DeviceType, onSelect: (String) -> Unit) {
                         tint = MaterialTheme.colorScheme.primary
                     )
                     Spacer(Modifier.width(16.dp))
-                    Text(brand.name, style = MaterialTheme.typography.bodyLarge)
+                    Column(Modifier.weight(1f)) {
+                        Text(brand.name, style = MaterialTheme.typography.bodyLarge)
+                        Text(
+                            text = "$modelCount 组码表",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 }
             }
         }
@@ -203,9 +235,16 @@ private fun BrandStep(type: DeviceType, onSelect: (String) -> Unit) {
 private fun TestStep(
     type: DeviceType,
     hasIr: Boolean,
-    onKey: (com.miir.remote.ir.RemoteKey) -> Unit,
+    codeSets: List<com.miir.remote.ir.CodeSet>,
+    currentIndex: Int,
+    autoMatching: Boolean,
+    onPrev: () -> Unit,
+    onNext: () -> Unit,
+    onToggleAutoMatch: () -> Unit,
+    onKey: (RemoteKey) -> Unit,
     onSave: () -> Unit
 ) {
+    val cs = codeSets.getOrNull(currentIndex)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -219,13 +258,84 @@ private fun TestStep(
                 modifier = Modifier.padding(bottom = 8.dp)
             )
         }
+
+        // 当前码集信息 + 切换控件
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 12.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant
+            )
+        ) {
+            Column(modifier = Modifier.padding(12.dp)) {
+                Text(
+                    text = "当前码表 ${currentIndex + 1}/${codeSets.size}",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = cs?.name ?: "无可用码表",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                if (cs != null && !cs.isSupported) {
+                    Text(
+                        text = "协议 ${cs.protocol} 暂未实现，需手动添加码值后才能发射",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                } else {
+                    Text(
+                        text = "协议 ${cs?.protocol}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    FilledTonalButton(onClick = onPrev, enabled = codeSets.size > 1) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
+                        Spacer(Modifier.width(4.dp))
+                        Text("上一组")
+                    }
+                    FilledTonalButton(onClick = onNext, enabled = codeSets.size > 1) {
+                        Text("下一组")
+                        Spacer(Modifier.width(4.dp))
+                        Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null)
+                    }
+                    FilledTonalButton(
+                        onClick = onToggleAutoMatch,
+                        enabled = codeSets.size > 1
+                    ) {
+                        Icon(
+                            imageVector = if (autoMatching) Icons.Filled.Stop
+                            else Icons.Filled.Autorenew,
+                            contentDescription = null
+                        )
+                        Spacer(Modifier.width(4.dp))
+                        Text(if (autoMatching) "停止" else "自动匹配")
+                    }
+                }
+            }
+        }
+
         Text(
-            text = "将手机红外发射器对准设备，按下电源键测试；设备有反应后点击「保存遥控器」。",
+            text = "将手机红外发射器对准设备，按电源键测试；设备有反应后点击「保存遥控器」。",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(bottom = 12.dp)
         )
+
         RemoteKeyGrid(type = type, onKey = onKey)
+
         Spacer(Modifier.height(16.dp))
         Button(onClick = onSave, modifier = Modifier.fillMaxWidth()) {
             Text("保存遥控器", fontWeight = FontWeight.Bold)

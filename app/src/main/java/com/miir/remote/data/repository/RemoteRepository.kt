@@ -33,13 +33,15 @@ class RemoteRepository(
         groupId: Long,
         name: String,
         deviceType: String,
-        brandId: String
+        brandId: String,
+        modelId: String
     ): Long = remoteDao.insert(
         RemoteEntity(
             groupId = groupId,
             name = name,
             deviceType = deviceType,
             brandId = brandId,
+            modelId = modelId,
             sortOrder = nextRemoteOrder(groupId)
         )
     )

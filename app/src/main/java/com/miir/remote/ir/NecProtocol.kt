@@ -1,21 +1,23 @@
 package com.miir.remote.ir
 
 /**
- * NEC 红外协议编码器。
+ * NEC 红外协议编码器。同时支持标准 NEC 与扩展 NEC，覆盖 IRDB 中的
+ * NEC1 / NEC2 / NECx1 / NECx2 协议名（编码结构相同，NEC2 仅多一帧重复）。
  *
- * 标准 NEC 帧结构（38kHz 载波）：
+ * 标准 NEC 帧（38kHz 载波）：
  *   引导：9000us 高 + 4500us 低
- *   数据：32 位（地址8 + 地址取反8 + 命令8 + 命令取反8），低位在前
+ *   数据：32 位 = addr8 + addr_inv8 + cmd8 + cmd_inv8，低位在前
  *   每位：560us 高 + （0:560us 低 / 1:1690us 低）
  *   结束：560us 高
  *
- * 注意：实际设备码值因品牌 / 型号而异，此处生成的是结构合法、可由
- * [android.hardware.ConsumerIrManager] 发射的 NEC 帧。如需匹配真实设备，
- * 可在 [IrCodeDatabase] 中替换为对应品牌的真实码值。
+ * 扩展 NEC：当 subdevice 不为 255（IRDB 约定的"无 subdevice"标记）时，
+ * 第二字节使用 subdevice 原值而非 addr 取反，形成 16 位地址。
  */
-object NecProtocol {
+object NecProtocol : IrProtocol {
 
-    const val CARRIER = 38000
+    override val carrierHz = 38_000
+
+    const val CARRIER = 38000  // 兼容旧引用
 
     private const val LEAD_ON = 9000
     private const val LEAD_OFF = 4500
@@ -25,16 +27,21 @@ object NecProtocol {
     private const val STOP_ON = 560
 
     /**
-     * @param address 8 位地址（0..0xFF）
-     * @param command 8 位命令（0..0xFF）
-     * @return 可直接传给 [android.hardware.ConsumerIrManager.transmit] 的时序数组（微秒）
+     * @param device    8 位设备地址
+     * @param subdevice 8 位子地址；IRDB 约定 255 表示无子地址（标准 NEC，发 ~device）
+     * @param function  8 位命令
      */
-    fun encode(address: Int, command: Int): IntArray {
-        val addr = address and 0xFF
-        val cmd = command and 0xFF
-        // 32 位数据：addr | ~addr | cmd | ~cmd
+    override fun encode(device: Int, subdevice: Int, function: Int): IntArray {
+        val addr = device and 0xFF
+        val cmd = function and 0xFF
+        val secondByte = if (subdevice == 255 || subdevice < 0) {
+            addr.inv() and 0xFF
+        } else {
+            subdevice and 0xFF
+        }
+        // 32 位数据：addr | secondByte<<8 | cmd<<16 | ~cmd<<24，低位在前
         val word = addr.toLong() or
-            ((addr.inv() and 0xFF).toLong() shl 8) or
+            (secondByte.toLong() shl 8) or
             (cmd.toLong() shl 16) or
             ((cmd.inv() and 0xFF).toLong() shl 24)
 

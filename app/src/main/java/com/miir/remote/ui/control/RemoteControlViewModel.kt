@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 class RemoteControlViewModel(
     private val repo: RemoteRepository,
     private val ir: IrTransmitter,
+    private val codes: IrCodeDatabase,
     private val remoteId: Long
 ) : ViewModel() {
 
@@ -30,10 +31,21 @@ class RemoteControlViewModel(
 
     fun deviceType(): DeviceType? = _remote.value?.let { DeviceType.fromId(it.deviceType) }
 
+    /** 当前遥控器命中的码集名（用于在控制屏显示来源）。 */
+    fun currentCodeSetName(): String? =
+        _remote.value?.modelId?.takeIf { it.isNotEmpty() }?.let { codes.codeSet(it)?.name }
+
+    /** 当前码集协议是否被 App 实现（用于在控制屏提示不可发射）。 */
+    fun isCodeSetSupported(): Boolean {
+        val r = _remote.value ?: return false
+        if (r.modelId.isEmpty()) return false
+        return codes.codeSet(r.modelId)?.isSupported ?: false
+    }
+
     fun transmit(key: RemoteKey) {
         val r = _remote.value ?: return
-        val type = DeviceType.fromId(r.deviceType)
-        IrCodeDatabase.patternFor(type, r.brandId, key)?.let { (carrier, pattern) ->
+        if (r.modelId.isEmpty()) return
+        codes.patternFor(r.modelId, key)?.let { (carrier, pattern) ->
             ir.transmit(carrier, pattern)
         }
     }

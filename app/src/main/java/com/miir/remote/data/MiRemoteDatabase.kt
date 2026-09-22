@@ -11,7 +11,7 @@ import com.miir.remote.data.entity.RemoteEntity
 
 @Database(
     entities = [GroupEntity::class, RemoteEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class MiRemoteDatabase : RoomDatabase() {

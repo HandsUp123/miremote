@@ -1,0 +1,492 @@
+{
+  "brands": [
+    {
+      "id": "samsung_tv",
+      "name": "三星",
+      "deviceType": "TV",
+      "models": [
+        {
+          "id": "samsung_tv_7_7",
+          "name": "Samsung TV (7,7)",
+          "protocol": "NECx2",
+          "device": 7,
+          "subdevice": 7,
+          "keys": {
+            "source": 1,
+            "power": 2,
+            "1": 4,
+            "2": 5,
+            "3": 6,
+            "vol_up": 7,
+            "4": 8,
+            "5": 9,
+            "6": 10,
+            "vol_down": 11,
+            "7": 12,
+            "8": 13,
+            "9": 14,
+            "mute": 15,
+            "ch_down": 16,
+            "0": 17,
+            "ch_up": 18,
+            "prev_ch": 19,
+            "menu": 26,
+            "exit": 45,
+            "settings": 75,
+            "guide": 79,
+            "back": 88,
+            "up": 96,
+            "down": 97,
+            "right": 98,
+            "left": 101,
+            "ok": 104,
+            "home": 121
+          }
+        }
+      ]
+    },
+    {
+      "id": "lg_tv",
+      "name": "LG",
+      "deviceType": "TV",
+      "models": [
+        {
+          "id": "lg_tv_4",
+          "name": "LG TV (4,-1)",
+          "protocol": "NEC1",
+          "device": 4,
+          "subdevice": 255,
+          "keys": {
+            "ch_up": 0,
+            "up": 0,
+            "ch_down": 1,
+            "left": 1,
+            "down": 1,
+            "vol_up": 2,
+            "right": 2,
+            "vol_down": 3,
+            "power": 8,
+            "mute": 9,
+            "source": 11,
+            "sleep": 14,
+            "timer": 14,
+            "0": 16,
+            "1": 17,
+            "2": 18,
+            "3": 19,
+            "4": 20,
+            "5": 21,
+            "6": 22,
+            "7": 23,
+            "8": 24,
+            "9": 25,
+            "prev_ch": 26,
+            "back": 40,
+            "menu": 67,
+            "ok": 68,
+            "exit": 91,
+            "next": 142,
+            "prev": 143,
+            "guide": 169,
+            "play": 176,
+            "stop": 177,
+            "pause": 186
+          }
+        },
+        {
+          "id": "lg_tv_1_1",
+          "name": "LG TV (1,1)",
+          "protocol": "NEC1",
+          "device": 1,
+          "subdevice": 1,
+          "keys": {
+            "mute": 10,
+            "power": 28
+          }
+        }
+      ]
+    },
+    {
+      "id": "sony_tv",
+      "name": "索尼",
+      "deviceType": "TV",
+      "models": [
+        {
+          "id": "sony_tv_1",
+          "name": "Sony TV (1,-1)",
+          "protocol": "Sony12",
+          "device": 1,
+          "subdevice": 255,
+          "keys": {
+            "1": 0,
+            "2": 1,
+            "3": 2,
+            "4": 3,
+            "5": 4,
+            "6": 5,
+            "7": 6,
+            "8": 7,
+            "9": 8,
+            "0": 9,
+            "ok": 11,
+            "guide": 14,
+            "ch_up": 16,
+            "ch_down": 17,
+            "vol_up": 18,
+            "vol_down": 19,
+            "mute": 20,
+            "power": 21,
+            "right": 51,
+            "left": 52,
+            "sleep": 54,
+            "prev_ch": 59,
+            "timer": 60,
+            "menu": 96,
+            "exit": 99,
+            "up": 116,
+            "down": 117
+          }
+        },
+        {
+          "id": "sony_tv_84",
+          "name": "Sony TV (84,-1)",
+          "protocol": "Sony15",
+          "device": 84,
+          "subdevice": 255,
+          "keys": {
+            "menu": 41,
+            "source": 42,
+            "right": 51,
+            "left": 52,
+            "up": 53,
+            "down": 54,
+            "ok": 90
+          }
+        }
+      ]
+    },
+    {
+      "id": "tcl_tv",
+      "name": "TCL",
+      "deviceType": "TV",
+      "models": [
+        {
+          "id": "tcl_tv_15",
+          "name": "TCL TV (15,-1)",
+          "protocol": "RCA-38",
+          "device": 15,
+          "subdevice": 255,
+          "keys": {
+            "menu": 8,
+            "guide": 26,
+            "back": 39,
+            "power": 42,
+            "ch_down": 44,
+            "ch_up": 45,
+            "vol_down": 46,
+            "vol_up": 47,
+            "0": 48,
+            "1": 49,
+            "2": 50,
+            "3": 51,
+            "4": 52,
+            "5": 53,
+            "6": 54,
+            "7": 55,
+            "8": 56,
+            "9": 57,
+            "mute": 63,
+            "left": 86,
+            "right": 87,
+            "down": 88,
+            "up": 89,
+            "source": 163,
+            "stop": 228,
+            "ok": 244
+          }
+        }
+      ]
+    },
+    {
+      "id": "panasonic_tv",
+      "name": "松下",
+      "deviceType": "TV",
+      "models": [
+        {
+          "id": "panasonic_tv_128_0",
+          "name": "Panasonic TV (128,0)",
+          "protocol": "Panasonic",
+          "device": 128,
+          "subdevice": 0,
+          "keys": {
+            "menu": 6,
+            "sleep": 15,
+            "1": 16,
+            "2": 17,
+            "3": 18,
+            "4": 19,
+            "5": 20,
+            "6": 21,
+            "7": 22,
+            "8": 23,
+            "9": 24,
+            "0": 25,
+            "vol_up": 32,
+            "vol_down": 33,
+            "mute": 50,
+            "ch_up": 52,
+            "ch_down": 53,
+            "prev_ch": 55,
+            "power": 61,
+            "bright_up": 68,
+            "bright_down": 69,
+            "ok": 73,
+            "up": 74,
+            "down": 75,
+            "left": 78,
+            "right": 79,
+            "exit": 211,
+            "back": 212,
+            "settings": 239
+          }
+        },
+        {
+          "id": "panasonic_tv_128_9",
+          "name": "Panasonic TV (128,9)",
+          "protocol": "Panasonic",
+          "device": 128,
+          "subdevice": 9,
+          "keys": {
+            "guide": 135,
+            "home": 149,
+            "pause": 193,
+            "play": 192,
+            "stop": 194,
+            "prev": 220,
+            "next": 221
+          }
+        }
+      ]
+    },
+    {
+      "id": "sharp_tv",
+      "name": "夏普",
+      "deviceType": "TV",
+      "models": [
+        {
+          "id": "sharp_tv_1",
+          "name": "Sharp TV (1,-1)",
+          "protocol": "Sharp",
+          "device": 1,
+          "subdevice": 255,
+          "keys": {
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5,
+            "6": 6,
+            "7": 7,
+            "8": 8,
+            "9": 9,
+            "0": 10,
+            "ch_up": 17,
+            "ch_down": 18,
+            "source": 19,
+            "vol_up": 20,
+            "vol_down": 21,
+            "power": 22,
+            "mute": 23,
+            "menu": 32,
+            "prev_ch": 47
+          }
+        }
+      ]
+    },
+    {
+      "id": "epson_projector",
+      "name": "爱普生",
+      "deviceType": "PROJECTOR",
+      "models": [
+        {
+          "id": "epson_projector_131_85",
+          "name": "Epson Projector (131,85)",
+          "protocol": "NEC2",
+          "device": 131,
+          "subdevice": 85,
+          "keys": {
+            "exit": 132,
+            "ok": 133,
+            "power": 144,
+            "mute": 147,
+            "vol_up": 152,
+            "vol_down": 153,
+            "menu": 154,
+            "up": 176,
+            "right": 177,
+            "down": 178,
+            "left": 179
+          }
+        }
+      ]
+    },
+    {
+      "id": "benq_projector",
+      "name": "明基",
+      "deviceType": "PROJECTOR",
+      "models": [
+        {
+          "id": "benq_projector_48",
+          "name": "BenQ Projector (48,-1)",
+          "protocol": "NEC1",
+          "device": 48,
+          "subdevice": 255,
+          "keys": {
+            "left": 0,
+            "right": 2,
+            "source": 8,
+            "up": 10,
+            "menu": 12,
+            "back": 16,
+            "mute": 18,
+            "power": 24,
+            "vol_up": 26,
+            "down": 32,
+            "vol_down": 34
+          }
+        }
+      ]
+    },
+    {
+      "id": "philips_dvd",
+      "name": "飞利浦",
+      "deviceType": "DVD",
+      "models": [
+        {
+          "id": "philips_dvd_4",
+          "name": "Philips DVD (4,-1)",
+          "protocol": "RC6",
+          "device": 4,
+          "subdevice": 255,
+          "keys": {
+            "0": 0,
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5,
+            "6": 6,
+            "7": 7,
+            "8": 8,
+            "9": 9,
+            "power": 12,
+            "menu": 15,
+            "next": 32,
+            "prev": 33,
+            "play": 44,
+            "pause": 48,
+            "stop": 49,
+            "up": 88,
+            "down": 89,
+            "left": 90,
+            "right": 91,
+            "ok": 92,
+            "back": 131
+          }
+        }
+      ]
+    },
+    {
+      "id": "yamaha_audio",
+      "name": "雅马哈",
+      "deviceType": "AUDIO",
+      "models": [
+        {
+          "id": "yamaha_receiver_120",
+          "name": "Yamaha Receiver (120,-1)",
+          "protocol": "NEC1",
+          "device": 120,
+          "subdevice": 255,
+          "keys": {
+            "stop": 1,
+            "power": 15,
+            "vol_up": 30,
+            "vol_down": 31,
+            "sleep": 79,
+            "source": 94,
+            "up": 142,
+            "down": 143,
+            "mute": 156,
+            "menu": 157,
+            "right": 158,
+            "left": 159,
+            "back": 192,
+            "ok": 193
+          }
+        }
+      ]
+    },
+    {
+      "id": "samsung_ac",
+      "name": "三星",
+      "deviceType": "AC",
+      "models": [
+        {
+          "id": "samsung_ac_1_8",
+          "name": "Samsung AC (1,8)",
+          "protocol": "Samsung20",
+          "device": 1,
+          "subdevice": 8,
+          "keys": {
+            "sleep": 39,
+            "swing": 41,
+            "temp_down": 49,
+            "temp_up": 50,
+            "fan_speed": 52,
+            "power": 63
+          }
+        }
+      ]
+    },
+    {
+      "id": "airmate_fan",
+      "name": "艾美特",
+      "deviceType": "FAN",
+      "models": [
+        {
+          "id": "airmate_fan_3_1",
+          "name": "Airmate Fan (3,1)",
+          "protocol": "F12",
+          "device": 3,
+          "subdevice": 1,
+          "keys": {
+            "oscillate": 9,
+            "timer": 17,
+            "wind_type": 33,
+            "speed": 65,
+            "power": 129
+          }
+        }
+      ]
+    },
+    {
+      "id": "magic_lighting",
+      "name": "MAGIC LIGHTING",
+      "deviceType": "LIGHT",
+      "models": [
+        {
+          "id": "magic_lighting_0",
+          "name": "MAGIC LIGHTING (0,-1)",
+          "protocol": "NEC1",
+          "device": 0,
+          "subdevice": 255,
+          "keys": {
+            "bright_down": 4,
+            "bright_up": 5,
+            "power": 7
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -50,10 +50,19 @@ fun RemoteControlScreen(
 ) {
     val vm: RemoteControlViewModel = viewModel(
         factory = viewModelFactory {
-            initializer { RemoteControlViewModel(container.repository, container.irTransmitter, remoteId) }
+            initializer {
+                RemoteControlViewModel(
+                    container.repository,
+                    container.irTransmitter,
+                    container.irCodeDatabase,
+                    remoteId
+                )
+            }
         }
     )
     val remote by vm.remote.collectAsState()
+    val codeSetName = remember(remote) { vm.currentCodeSetName() }
+    val codeSetSupported = remember(remote) { vm.isCodeSetSupported() }
 
     var showRename by remember { mutableStateOf(false) }
     var renameText by remember { mutableStateOf("") }
@@ -104,6 +113,22 @@ fun RemoteControlScreen(
                         text = "当前设备没有红外发射器，按键不会发射信号。",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+                }
+                if (!codeSetSupported) {
+                    Text(
+                        text = "该遥控器码表协议暂未实现，按键不会发射。可在码库中替换为已支持的协议码值。",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+                }
+                codeSetName?.let {
+                    Text(
+                        text = "码表：$it",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
                 }

@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AcUnit
+import androidx.compose.material.icons.filled.Album
 import androidx.compose.material.icons.filled.Cast
-import androidx.compose.material.icons.filled.Disc
 import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.LiveTv
 import androidx.compose.material.icons.filled.Speaker
@@ -31,7 +31,7 @@ fun deviceTypeIcon(type: DeviceType): ImageVector = when (type) {
     DeviceType.FAN -> Icons.Filled.Toys
     DeviceType.PROJECTOR -> Icons.Filled.Cast
     DeviceType.AUDIO -> Icons.Filled.Speaker
-    DeviceType.DVD -> Icons.Filled.Disc
+    DeviceType.DVD -> Icons.Filled.Album
     DeviceType.LIGHT -> Icons.Filled.Lightbulb
 }
 
